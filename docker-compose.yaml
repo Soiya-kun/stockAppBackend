@@ -20,9 +20,9 @@ services:
     restart: always
     build: ./
     container_name: 'stockAppBackend'
-    working_dir: '/stockAppBackend'
     tty: true
+    working_dir: /app
     volumes:
-      - .:/stockAppBackend
+      - ./:/app
     command: >
       bash -c "uvicorn app.main:app --reload --host 0.0.0.0"

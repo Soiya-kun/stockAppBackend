@@ -8,7 +8,7 @@ import app.usecases as usecases
 router = APIRouter()
 
 
-@router.post("/access-token", response_model=entities.Token)
+@router.post("/login", response_model=entities.Token)
 async def login_access_token(
     *,
     uu: usecases.UserUsecase = Depends(deps.get_user_usecase),
