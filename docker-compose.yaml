@@ -1,0 +1,28 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      # 永続化するときにマウントするディレクトリ
+      - ./mysql/mysql_data:/var/lib/mysql
+      - ./mysql/mysql_conf/:/etc/mysql/conf.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: stock
+    command: mysqld --explicit_defaults_for_timestamp=true
+
+  fastapi:
+    ports:
+      - 8000:8000
+    restart: always
+    build: ./
+    container_name: 'stockAppBackend'
+    working_dir: '/stockAppBackend'
+    tty: true
+    volumes:
+      - .:/stockAppBackend
+    command: >
+      bash -c "uvicorn app.main:app --reload --host 0.0.0.0"

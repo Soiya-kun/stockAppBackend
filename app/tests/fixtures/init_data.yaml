@@ -1,0 +1,21 @@
+- model: user
+  fields:
+    username: test
+    password: pass
+  
+- model: stock
+  fields:
+    sc: testsc
+    name: testname
+    market: testmarket
+    industry: testindustry
+    b_date: 2022-1-1
+    opened_price: 1500.5
+    high_price: 1800.5
+    low_price: 1300.5
+    closed_price: 1400.5
+    volume: 1000000
+    transaction_price: 1000000000.5
+    market_capitalization: 100000000000000.5
+    low_limit: 1000.5
+    high_limit: 2000.5
