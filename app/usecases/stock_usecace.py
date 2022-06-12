@@ -13,6 +13,12 @@ class StockRepositoryInterface(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def get_all_sc(
+        self
+    ) -> list[str]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def create(self, stock_created: entities.StockCreated) -> Optional[entities.Stock]:
         raise NotImplementedError
 
@@ -27,6 +33,11 @@ class StockUsecase:
         self, b_date: datetime.date, sc: str
     ) -> Optional[entities.Stock]:
         return self.repo.find_by_b_date_and_sc(b_date=b_date, sc=sc)
+
+    def get_all_sc(
+            self
+    ) -> list[str]:
+        return self.repo.get_all_sc()
 
     def create(self, stock_created: entities.StockCreated) -> Optional[entities.Stock]:
         if self.find_by_b_date_and_sc(b_date=stock_created.b_date, sc=stock_created.sc):

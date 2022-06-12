@@ -15,3 +15,10 @@ async def create_stock_data(
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> list[Optional[entities.Stock]]:
     return [su.create(sc) for sc in stocks]
+
+
+@router.get("/sc/list", response_model=list[str])
+async def get_all_sc(
+        su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+) -> list[str]:
+    return su.get_all_sc()
