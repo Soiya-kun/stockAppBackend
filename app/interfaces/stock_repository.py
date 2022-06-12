@@ -25,6 +25,14 @@ class StockRepository(StockRepositoryInterface):
             return None
         return entities.Stock.from_orm(stock)
 
+    def get_stock(self, sc: str) -> list[entities.Stock]:
+        stocks: list[models.Stock] = (
+            self.db.query(self.model)
+                .filter(self.model.sc == sc)
+                .all()
+        )
+        return [entities.Stock.from_orm(stock) for stock in stocks]
+
     def get_all_sc(self) -> list[str]:
         result = self.db.query(self.model.sc).group_by(self.model.sc).all()
         return [res[0] for res in result]

@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/list", response_model=list[Optional[entities.Stock]])
-async def create_stock_data(
+async def create_stocks(
     stocks: list[entities.StockCreated],
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> list[Optional[entities.Stock]]:
@@ -19,6 +19,14 @@ async def create_stock_data(
 
 @router.get("/sc/list", response_model=list[str])
 async def get_all_sc(
-        su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+    su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> list[str]:
     return su.get_all_sc()
+
+
+@router.get("/list/{sc}", response_model=list[entities.Stock])
+async def get_stocks(
+    sc: str,
+    su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+) -> list[entities.Stock]:
+    return su.get_stocks(sc=sc)
