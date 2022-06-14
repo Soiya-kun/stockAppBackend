@@ -7,6 +7,7 @@ class Stock(Base):
 
     __tablename__ = "stocks"
 
+    # TODO scとb_dateでUnique
     id = Column(Integer, primary_key=True, index=True)
     sc = Column(String(128), index=True)
     name = Column(String(128), index=True)

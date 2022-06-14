@@ -1,2 +1,3 @@
 from app.interfaces.user_repository import UserRepository
 from app.interfaces.stock_repository import StockRepository
+from app.interfaces.stock_split_repository import StockSplitRepository

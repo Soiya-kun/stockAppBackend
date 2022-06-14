@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 import app.domains.entities as entities
 import app.drivers.rdb.models as models
-from app.usecases.stock_usecace import StockRepositoryInterface
+from app.interfaces.repo_interfaces import StockRepositoryInterface
 
 
 class StockRepository(StockRepositoryInterface):

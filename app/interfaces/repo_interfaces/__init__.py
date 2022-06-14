@@ -1,0 +1,2 @@
+from app.interfaces.repo_interfaces.stock import StockRepositoryInterface
+from app.interfaces.repo_interfaces.stock_split import StockSplitRepositoryInterface

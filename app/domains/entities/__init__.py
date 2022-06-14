@@ -7,3 +7,4 @@ from app.domains.entities.user import (
     TokenPayload,
 )
 from app.domains.entities.stock import StockCreated, Stock
+from app.domains.entities.stock_split import StockSplitCreated, StockSplit
