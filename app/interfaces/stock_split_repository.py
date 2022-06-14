@@ -13,11 +13,13 @@ class StockSplitRepository(StockSplitRepositoryInterface):
         self.db: Session = db
         self.model = models.StockSplit
 
-    def create(self, stock_split_created: entities.StockSplitCreated) -> Optional[entities.StockSplit]:
+    def create(
+        self, stock_split_created: entities.StockSplitCreated
+    ) -> Optional[entities.StockSplit]:
         stock_split = self.model(
             sc=stock_split_created.sc,
             split_date=stock_split_created.split_date,
-            split_ratio=stock_split_created.split_ratio
+            split_ratio=stock_split_created.split_ratio,
         )
         self.db.add(stock_split)
         self.db.commit()
@@ -27,8 +29,8 @@ class StockSplitRepository(StockSplitRepositoryInterface):
     def find(self, sc: str, split_date: date) -> Optional[entities.StockSplit]:
         stock_split: Optional[models.StockSplit] = (
             self.db.query(self.model)
-                .filter(self.model.sc == sc, self.model.split_date == split_date)
-                .first()
+            .filter(self.model.sc == sc, self.model.split_date == split_date)
+            .first()
         )
         if stock_split is None:
             return None
@@ -36,8 +38,6 @@ class StockSplitRepository(StockSplitRepositoryInterface):
 
     def list(self, sc: str) -> list[entities.StockSplit]:
         stock_splits: list[models.StockSplit] = (
-            self.db.query(self.model)
-                .filter(self.model.sc == sc)
-                .all()
+            self.db.query(self.model).filter(self.model.sc == sc).all()
         )
         return [entities.StockSplit.from_orm(s) for s in stock_splits]

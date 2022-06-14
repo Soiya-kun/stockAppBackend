@@ -14,12 +14,12 @@ class StockRepository(StockRepositoryInterface):
         self.model = models.Stock
 
     def find_by_b_date_and_sc(
-            self, b_date: datetime.date, sc: str
+        self, b_date: datetime.date, sc: str
     ) -> Optional[entities.Stock]:
         stock: Optional[models.Stock] = (
             self.db.query(self.model)
-                .filter(self.model.b_date == b_date, self.model.sc == sc)
-                .first()
+            .filter(self.model.b_date == b_date, self.model.sc == sc)
+            .first()
         )
         if stock is None:
             return None
@@ -27,9 +27,7 @@ class StockRepository(StockRepositoryInterface):
 
     def get_stock(self, sc: str) -> list[entities.Stock]:
         stocks: list[models.Stock] = (
-            self.db.query(self.model)
-                .filter(self.model.sc == sc)
-                .all()
+            self.db.query(self.model).filter(self.model.sc == sc).all()
         )
         return [entities.Stock.from_orm(stock) for stock in stocks]
 

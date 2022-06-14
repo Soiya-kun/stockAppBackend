@@ -32,7 +32,9 @@ def get_user_usecase(db: Session = Depends(get_db)) -> usecases.UserUsecase:
 
 def get_stock_usecase(db: Session = Depends(get_db)) -> usecases.StockUsecase:
     repository: usecases.StockRepositoryInterface = interfaces.StockRepository(db)
-    repository_split: StockSplitRepositoryInterface = interfaces.StockSplitRepository(db)
+    repository_split: StockSplitRepositoryInterface = interfaces.StockSplitRepository(
+        db
+    )
     return usecases.StockUsecase(repository, repository_split)
 
 

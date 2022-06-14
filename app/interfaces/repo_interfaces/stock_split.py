@@ -7,7 +7,9 @@ import app.domains.entities as entities
 
 class StockSplitRepositoryInterface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def create(self, stock_split_created: entities.StockSplitCreated) -> Optional[entities.StockSplit]:
+    def create(
+        self, stock_split_created: entities.StockSplitCreated
+    ) -> Optional[entities.StockSplit]:
         raise NotImplementedError
 
     @abc.abstractmethod
