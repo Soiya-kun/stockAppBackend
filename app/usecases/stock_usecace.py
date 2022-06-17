@@ -25,7 +25,19 @@ class StockUsecase:
         return self.repo.find_by_b_date_and_sc(b_date=b_date, sc=sc)
 
     def get_stocks(self, sc: str) -> list[entities.Stock]:
-        return self.repo.get_stock(sc=sc)
+        ret: list[entities.Stock] = self.repo.get_stock(sc=sc)
+        sss: list[entities.StockSplit] = self.repo_split.list(sc=sc)
+        for ss in sss:
+            for stock in ret:
+                if stock.b_date <= ss.split_date:
+                    stock.volume = stock.volume / ss.split_ratio
+                    stock.opened_price = stock.opened_price * ss.split_ratio
+                    stock.high_price = stock.high_price * ss.split_ratio
+                    stock.low_price = stock.low_price * ss.split_ratio
+                    stock.closed_price = stock.closed_price * ss.split_ratio
+                if stock.b_date > ss.split_date:
+                    break
+        return ret
 
     def get_all_sc(self) -> list[str]:
         return self.repo.get_all_sc()

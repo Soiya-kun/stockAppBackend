@@ -1,6 +1,7 @@
 import datetime
 from typing import Optional
 
+from sqlalchemy import  asc
 from sqlalchemy.orm import Session
 
 import app.domains.entities as entities
@@ -27,7 +28,7 @@ class StockRepository(StockRepositoryInterface):
 
     def get_stock(self, sc: str) -> list[entities.Stock]:
         stocks: list[models.Stock] = (
-            self.db.query(self.model).filter(self.model.sc == sc).all()
+            self.db.query(self.model).filter(self.model.sc == sc).order_by(asc(models.Stock.b_date)).all()
         )
         return [entities.Stock.from_orm(stock) for stock in stocks]
 
