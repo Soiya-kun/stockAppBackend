@@ -5,19 +5,23 @@ import app.domains.entities as entities
 
 from app.interfaces.repo_interfaces import StockRepositoryInterface
 from app.interfaces.repo_interfaces import StockSplitRepositoryInterface
+from app.interfaces.repo_interfaces import SavedStockRepositoryInterface
 
 
 class StockUsecase:
     repo: StockRepositoryInterface
     repo_split: StockSplitRepositoryInterface
+    repo_saved: SavedStockRepositoryInterface
 
     def __init__(
         self,
         repository: StockRepositoryInterface,
         repo_split: StockSplitRepositoryInterface,
+        repo_saved: SavedStockRepositoryInterface
     ):
         self.repo: StockRepositoryInterface = repository
         self.repo_split: StockSplitRepositoryInterface = repo_split
+        self.repo_saved: SavedStockRepositoryInterface = repo_saved
 
     def find_by_b_date_and_sc(
         self, b_date: datetime.date, sc: str
@@ -55,3 +59,10 @@ class StockUsecase:
         ):
             return None
         return self.repo_split.create(stock_split_created=stock_split_created)
+
+    def save_stock(self, saved_stock: entities.SavedStockCreated) -> Optional[entities.SavedStock]:
+        if self.repo_split.find(
+                sc=saved_stock.sc, split_date=saved_stock.b_date
+        ):
+            return None
+        return self.repo_saved.create(saved_stock_created=saved_stock)

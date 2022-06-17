@@ -38,3 +38,11 @@ async def create_stock_split(
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> Optional[entities.Stock]:
     return su.create_split(stock_split)
+
+
+@router.post("/save", response_model=entities.SavedStock)
+async def save_stock_split(
+    saved_stock: entities.SavedStockCreated,
+    su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+) -> Optional[entities.SavedStock]:
+    return su.save_stock(saved_stock=saved_stock)

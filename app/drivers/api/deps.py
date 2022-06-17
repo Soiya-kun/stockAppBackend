@@ -13,6 +13,7 @@ import app.drivers.security as security
 from app.drivers.rdb.base import SessionLocal
 from app.core.config import settings
 from app.interfaces.repo_interfaces import StockSplitRepositoryInterface
+from app.interfaces.repo_interfaces import SavedStockRepositoryInterface
 
 reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"api/login/access-token/")
 
@@ -35,7 +36,10 @@ def get_stock_usecase(db: Session = Depends(get_db)) -> usecases.StockUsecase:
     repository_split: StockSplitRepositoryInterface = interfaces.StockSplitRepository(
         db
     )
-    return usecases.StockUsecase(repository, repository_split)
+    repository_saved: SavedStockRepositoryInterface = interfaces.SavedStockRepository(
+        db
+    )
+    return usecases.StockUsecase(repository=repository, repo_split=repository_split, repo_saved=repository_saved)
 
 
 def get_current_user(
