@@ -66,3 +66,6 @@ class StockUsecase:
         ):
             return None
         return self.repo_saved.create(saved_stock_created=saved_stock)
+
+    def delete_saved_stock(self, b_date: datetime, sc: str) -> Optional[entities.SavedStock]:
+        return self.repo_saved.delete_by_b_date_and_sc(b_date=b_date, sc=sc)

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Depends
@@ -46,3 +47,12 @@ async def save_stock_split(
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> Optional[entities.SavedStock]:
     return su.save_stock(saved_stock=saved_stock)
+
+
+@router.delete("/save", response_model=entities.SavedStock)
+async def save_stock_split(
+    b_date: datetime,
+    sc: str,
+    su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+) -> Optional[entities.SavedStock]:
+    return su.delete_saved_stock(b_date=b_date, sc=sc)
