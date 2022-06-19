@@ -30,6 +30,14 @@ class SavedStockRepository(SavedStockRepositoryInterface):
             return None
         return entities.SavedStock.from_orm(saved_stock)
 
+    def list_by_sc(self, sc: str) -> list[entities.SavedStock]:
+        stock_list: list[models.SavedStock] = (
+            self.db.query(self.model)
+                .filter(self.model.sc == sc)
+                .all()
+        )
+        return [entities.SavedStock.from_orm(stock) for stock in stock_list]
+
     def create(self, saved_stock_created: entities.SavedStockCreated) -> Optional[entities.SavedStock]:
         saved_stock = self.model(
             sc=saved_stock_created.sc,
@@ -40,8 +48,12 @@ class SavedStockRepository(SavedStockRepositoryInterface):
         self.db.refresh(saved_stock)
         return entities.SavedStock.from_orm(saved_stock)
 
-    def delete_by_b_date_and_sc(self, b_date: datetime, sc: str) -> Optional[entities.SavedStock]:
-        saved_stock: Optional[models.SavedStock] = self._find_by_b_date_and_sc(b_date=b_date, sc=sc)
+    def delete(self, id: int) -> Optional[entities.SavedStock]:
+        saved_stock: Optional[models.SavedStock] = (
+            self.db.query(self.model)
+                .filter(self.model.id == id)
+                .first()
+        )
         if saved_stock is None:
             return None
         self.db.delete(saved_stock)

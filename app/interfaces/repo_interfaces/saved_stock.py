@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 from typing import Optional
 
 import abc
@@ -11,9 +11,13 @@ class SavedStockRepositoryInterface(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def list_by_sc(self, sc: str) -> list[entities.SavedStock]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def create(self, saved_stock_created: entities.SavedStockCreated) -> Optional[entities.SavedStockCreated]:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete_by_b_date_and_sc(self, b_date: datetime, sc: str) -> Optional[entities.SavedStock]:
+    def delete(self, id: int) -> Optional[entities.SavedStock]:
         raise NotImplementedError

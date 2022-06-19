@@ -41,8 +41,16 @@ async def create_stock_split(
     return su.create_split(stock_split)
 
 
+@router.get("/save/list/{sc}", response_model=list[entities.SavedStock])
+async def get_saved_stock_list(
+    sc: str,
+    su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+) -> list[entities.SavedStock]:
+    return su.get_saved_stock_list(sc=sc)
+
+
 @router.post("/save", response_model=entities.SavedStock)
-async def save_stock_split(
+async def save_stock(
     saved_stock: entities.SavedStockCreated,
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> Optional[entities.SavedStock]:
@@ -50,9 +58,8 @@ async def save_stock_split(
 
 
 @router.delete("/save", response_model=entities.SavedStock)
-async def save_stock_split(
-    b_date: datetime,
-    sc: str,
+async def delete_saved_stock(
+    id: int,
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> Optional[entities.SavedStock]:
-    return su.delete_saved_stock(b_date=b_date, sc=sc)
+    return su.delete_saved_stock(id=id)
