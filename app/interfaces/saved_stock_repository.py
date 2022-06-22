@@ -38,6 +38,14 @@ class SavedStockRepository(SavedStockRepositoryInterface):
         )
         return [entities.SavedStock.from_orm(stock) for stock in stock_list]
 
+    def list_of_sc(self) -> list[str]:
+        stock_list = (
+            self.db.query(self.model.sc)
+                .group_by(self.model.sc)
+                .all()
+        )
+        return [sc[0] for sc in stock_list]
+
     def create(self, saved_stock_created: entities.SavedStockCreated) -> Optional[entities.SavedStock]:
         saved_stock = self.model(
             sc=saved_stock_created.sc,

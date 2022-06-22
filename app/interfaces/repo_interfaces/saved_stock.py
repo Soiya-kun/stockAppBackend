@@ -15,9 +15,14 @@ class SavedStockRepositoryInterface(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def list_of_sc(self) -> list[str]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def create(self, saved_stock_created: entities.SavedStockCreated) -> Optional[entities.SavedStockCreated]:
         raise NotImplementedError
 
     @abc.abstractmethod
     def delete(self, id: int) -> Optional[entities.SavedStock]:
         raise NotImplementedError
+

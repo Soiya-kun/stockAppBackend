@@ -21,3 +21,8 @@ class StockRepositoryInterface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def create(self, stock_created: entities.StockCreated) -> Optional[entities.Stock]:
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_sc(self, b_date: date, transaction_price: int) -> list[str]:
+        raise NotImplementedError
+

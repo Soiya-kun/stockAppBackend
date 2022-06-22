@@ -36,6 +36,10 @@ class StockRepository(StockRepositoryInterface):
         result = self.db.query(self.model.sc).group_by(self.model.sc).all()
         return [res[0] for res in result]
 
+    def get_sc(self, b_date: datetime.date, transaction_price: int) -> list[str]:
+        result = self.db.query(self.model.sc).filter(self.model.transaction_price >= transaction_price, self.model.b_date == b_date).all()
+        return [res[0] for res in result]
+
     def create(self, stock_created: entities.StockCreated) -> Optional[entities.Stock]:
         stock = self.model(
             sc=stock_created.sc,

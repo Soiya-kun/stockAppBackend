@@ -73,3 +73,8 @@ class StockUsecase:
     def delete_saved_stock(self, id: int) -> Optional[entities.SavedStock]:
         return self.repo_saved.delete(id=id)
 
+    def get_saved_stock_sc(self) -> list[str]:
+        return self.repo_saved.list_of_sc()
+
+    def get_sc_by_transaction_price(self, b_date: datetime.date, transaction_price: int) -> list[str]:
+        return self.repo.get_sc(b_date=b_date, transaction_price=transaction_price)
