@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, Date, Text
 
 from app.drivers.rdb.base import Base
 
@@ -11,3 +11,4 @@ class SavedStock(Base):
     id = Column(Integer, primary_key=True, index=True)
     sc = Column(String(128), index=True)
     b_date = Column(Date, index=True)
+    note = Column(Text)

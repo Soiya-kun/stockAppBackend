@@ -1,6 +1,7 @@
 import datetime
 from typing import Optional
 
+from sqlalchemy import asc
 from sqlalchemy.orm import Session
 
 import app.domains.entities as entities
@@ -34,6 +35,7 @@ class SavedStockRepository(SavedStockRepositoryInterface):
         stock_list: list[models.SavedStock] = (
             self.db.query(self.model)
                 .filter(self.model.sc == sc)
+                .order_by(asc(self.model.b_date))
                 .all()
         )
         return [entities.SavedStock.from_orm(stock) for stock in stock_list]
@@ -50,6 +52,7 @@ class SavedStockRepository(SavedStockRepositoryInterface):
         saved_stock = self.model(
             sc=saved_stock_created.sc,
             b_date=saved_stock_created.b_date,
+            note=saved_stock_created.note
         )
         self.db.add(saved_stock)
         self.db.commit()

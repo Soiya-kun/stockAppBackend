@@ -61,10 +61,11 @@ class StockUsecase:
         return self.repo_split.create(stock_split_created=stock_split_created)
 
     def save_stock(self, saved_stock: entities.SavedStockCreated) -> Optional[entities.SavedStock]:
-        if self.repo_split.find(
-                sc=saved_stock.sc, split_date=saved_stock.b_date
-        ):
-            return None
+        stock = self.repo_saved.find_by_b_date_and_sc(
+            sc=saved_stock.sc, b_date=saved_stock.b_date
+        )
+        if stock is not None:
+            self.repo_saved.delete(id=stock.id)
         return self.repo_saved.create(saved_stock_created=saved_stock)
 
     def get_saved_stock_list(self, sc: str) -> list[entities.SavedStock]:
