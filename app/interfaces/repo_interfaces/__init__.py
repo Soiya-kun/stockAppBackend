@@ -1,3 +1,4 @@
 from app.interfaces.repo_interfaces.stock import StockRepositoryInterface
 from app.interfaces.repo_interfaces.stock_split import StockSplitRepositoryInterface
 from app.interfaces.repo_interfaces.saved_stock import SavedStockRepositoryInterface
+from app.interfaces.repo_interfaces.sc_note import ScNoteRepositoryInterface

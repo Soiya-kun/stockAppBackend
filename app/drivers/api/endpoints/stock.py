@@ -79,3 +79,19 @@ async def delete_saved_stock(
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> Optional[entities.SavedStock]:
     return su.delete_saved_stock(id=id)
+
+
+@router.post("/note", response_model=entities.ScNote)
+async def create_sc_note(
+    sc_note_created: entities.ScNoteCreated,
+    su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+) -> entities.ScNote:
+    return su.create_sc_note(obj_in=sc_note_created)
+
+
+@router.get("/note", response_model=entities.ScNote)
+async def get_sc_note(
+    sc: str,
+    su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
+) -> Optional[entities.ScNote]:
+    return su.get_sc_note(sc=sc)

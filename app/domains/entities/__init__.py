@@ -9,3 +9,4 @@ from app.domains.entities.user import (
 from app.domains.entities.stock import StockCreated, Stock
 from app.domains.entities.stock_split import StockSplitCreated, StockSplit
 from app.domains.entities.saved_stock import SavedStockCreated, SavedStock
+from app.domains.entities.sc_note import ScNoteCreated, ScNote

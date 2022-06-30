@@ -3,7 +3,7 @@ from typing import Optional
 
 import app.domains.entities as entities
 
-from app.interfaces.repo_interfaces import StockRepositoryInterface
+from app.interfaces.repo_interfaces import StockRepositoryInterface, ScNoteRepositoryInterface
 from app.interfaces.repo_interfaces import StockSplitRepositoryInterface
 from app.interfaces.repo_interfaces import SavedStockRepositoryInterface
 
@@ -12,21 +12,34 @@ class StockUsecase:
     repo: StockRepositoryInterface
     repo_split: StockSplitRepositoryInterface
     repo_saved: SavedStockRepositoryInterface
+    repo_sc_note: ScNoteRepositoryInterface
 
     def __init__(
         self,
         repository: StockRepositoryInterface,
         repo_split: StockSplitRepositoryInterface,
-        repo_saved: SavedStockRepositoryInterface
+        repo_saved: SavedStockRepositoryInterface,
+        repo_sc_note: ScNoteRepositoryInterface
     ):
         self.repo: StockRepositoryInterface = repository
         self.repo_split: StockSplitRepositoryInterface = repo_split
         self.repo_saved: SavedStockRepositoryInterface = repo_saved
+        self.repo_sc_note: ScNoteRepositoryInterface = repo_sc_note
 
     def find_by_b_date_and_sc(
         self, b_date: datetime.date, sc: str
     ) -> Optional[entities.Stock]:
         return self.repo.find_by_b_date_and_sc(b_date=b_date, sc=sc)
+
+    def create_sc_note(
+        self, obj_in: entities.ScNoteCreated
+    ) -> entities.ScNote:
+        return self.repo_sc_note.create(obj_in=obj_in)
+
+    def get_sc_note(
+        self, sc: str
+    ) -> Optional[entities.ScNote]:
+        return self.repo_sc_note.get_recent(sc=sc)
 
     def get_stocks(self, sc: str) -> list[entities.Stock]:
         ret: list[entities.Stock] = self.repo.get_stock(sc=sc)
