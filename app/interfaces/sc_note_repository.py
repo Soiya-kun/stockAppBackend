@@ -1,7 +1,7 @@
 import datetime
 from typing import Optional
 
-from sqlalchemy import asc
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session
 
 import app.domains.entities as entities
@@ -16,9 +16,7 @@ class ScNoteRepository(ScNoteRepositoryInterface):
 
     def create(self, obj_in: entities.ScNoteCreated) -> entities.ScNote:
         sc_note: models.ScNote = self.model(
-            sc=obj_in.sc,
-            note=obj_in.note,
-            b_date=obj_in.b_date
+            sc=obj_in.sc, note=obj_in.note, b_date=obj_in.b_date
         )
         self.db.add(sc_note)
         self.db.commit()
@@ -28,9 +26,9 @@ class ScNoteRepository(ScNoteRepositoryInterface):
     def _get_recent(self, sc: str) -> Optional[models.ScNote]:
         return (
             self.db.query(self.model)
-                .filter(self.model.sc == sc)
-                .order_by(asc(self.model.created_at))
-                .first()
+            .filter(self.model.sc == sc)
+            .order_by(desc(self.model.created_at))
+            .first()
         )
 
     def get_recent(self, sc: str) -> Optional[entities.ScNote]:

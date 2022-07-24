@@ -15,18 +15,20 @@ class SavedStockRepository(SavedStockRepositoryInterface):
         self.model = models.SavedStock
 
     def _find_by_b_date_and_sc(
-            self, b_date: datetime.date, sc: str
+        self, b_date: datetime.date, sc: str
     ) -> Optional[entities.SavedStock]:
         return (
             self.db.query(self.model)
-                .filter(self.model.b_date == b_date, self.model.sc == sc)
-                .first()
+            .filter(self.model.b_date == b_date, self.model.sc == sc)
+            .first()
         )
 
     def find_by_b_date_and_sc(
-            self, b_date: datetime.date, sc: str
+        self, b_date: datetime.date, sc: str
     ) -> Optional[entities.SavedStock]:
-        saved_stock: Optional[models.Stock] = self._find_by_b_date_and_sc(b_date=b_date, sc=sc)
+        saved_stock: Optional[models.Stock] = self._find_by_b_date_and_sc(
+            b_date=b_date, sc=sc
+        )
         if saved_stock is None:
             return None
         return entities.SavedStock.from_orm(saved_stock)
@@ -34,25 +36,23 @@ class SavedStockRepository(SavedStockRepositoryInterface):
     def list_by_sc(self, sc: str) -> list[entities.SavedStock]:
         stock_list: list[models.SavedStock] = (
             self.db.query(self.model)
-                .filter(self.model.sc == sc)
-                .order_by(asc(self.model.b_date))
-                .all()
+            .filter(self.model.sc == sc)
+            .order_by(asc(self.model.b_date))
+            .all()
         )
         return [entities.SavedStock.from_orm(stock) for stock in stock_list]
 
     def list_of_sc(self) -> list[str]:
-        stock_list = (
-            self.db.query(self.model.sc)
-                .group_by(self.model.sc)
-                .all()
-        )
+        stock_list = self.db.query(self.model.sc).group_by(self.model.sc).all()
         return [sc[0] for sc in stock_list]
 
-    def create(self, saved_stock_created: entities.SavedStockCreated) -> Optional[entities.SavedStock]:
+    def create(
+        self, saved_stock_created: entities.SavedStockCreated
+    ) -> Optional[entities.SavedStock]:
         saved_stock = self.model(
             sc=saved_stock_created.sc,
             b_date=saved_stock_created.b_date,
-            note=saved_stock_created.note
+            note=saved_stock_created.note,
         )
         self.db.add(saved_stock)
         self.db.commit()
@@ -61,9 +61,7 @@ class SavedStockRepository(SavedStockRepositoryInterface):
 
     def delete(self, id: int) -> Optional[entities.SavedStock]:
         saved_stock: Optional[models.SavedStock] = (
-            self.db.query(self.model)
-                .filter(self.model.id == id)
-                .first()
+            self.db.query(self.model).filter(self.model.id == id).first()
         )
         if saved_stock is None:
             return None

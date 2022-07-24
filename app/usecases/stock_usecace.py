@@ -3,7 +3,10 @@ from typing import Optional
 
 import app.domains.entities as entities
 
-from app.interfaces.repo_interfaces import StockRepositoryInterface, ScNoteRepositoryInterface
+from app.interfaces.repo_interfaces import (
+    StockRepositoryInterface,
+    ScNoteRepositoryInterface,
+)
 from app.interfaces.repo_interfaces import StockSplitRepositoryInterface
 from app.interfaces.repo_interfaces import SavedStockRepositoryInterface
 
@@ -19,7 +22,7 @@ class StockUsecase:
         repository: StockRepositoryInterface,
         repo_split: StockSplitRepositoryInterface,
         repo_saved: SavedStockRepositoryInterface,
-        repo_sc_note: ScNoteRepositoryInterface
+        repo_sc_note: ScNoteRepositoryInterface,
     ):
         self.repo: StockRepositoryInterface = repository
         self.repo_split: StockSplitRepositoryInterface = repo_split
@@ -31,14 +34,10 @@ class StockUsecase:
     ) -> Optional[entities.Stock]:
         return self.repo.find_by_b_date_and_sc(b_date=b_date, sc=sc)
 
-    def create_sc_note(
-        self, obj_in: entities.ScNoteCreated
-    ) -> entities.ScNote:
+    def create_sc_note(self, obj_in: entities.ScNoteCreated) -> entities.ScNote:
         return self.repo_sc_note.create(obj_in=obj_in)
 
-    def get_sc_note(
-        self, sc: str
-    ) -> Optional[entities.ScNote]:
+    def get_sc_note(self, sc: str) -> Optional[entities.ScNote]:
         return self.repo_sc_note.get_recent(sc=sc)
 
     def get_stocks(self, sc: str) -> list[entities.Stock]:
@@ -73,7 +72,9 @@ class StockUsecase:
             return None
         return self.repo_split.create(stock_split_created=stock_split_created)
 
-    def save_stock(self, saved_stock: entities.SavedStockCreated) -> Optional[entities.SavedStock]:
+    def save_stock(
+        self, saved_stock: entities.SavedStockCreated
+    ) -> Optional[entities.SavedStock]:
         stock = self.repo_saved.find_by_b_date_and_sc(
             sc=saved_stock.sc, b_date=saved_stock.b_date
         )
@@ -90,5 +91,7 @@ class StockUsecase:
     def get_saved_stock_sc(self) -> list[str]:
         return self.repo_saved.list_of_sc()
 
-    def get_sc_by_transaction_price(self, b_date: datetime.date, transaction_price: int) -> list[str]:
+    def get_sc_by_transaction_price(
+        self, b_date: datetime.date, transaction_price: int
+    ) -> list[str]:
         return self.repo.get_sc(b_date=b_date, transaction_price=transaction_price)

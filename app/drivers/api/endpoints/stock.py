@@ -31,7 +31,9 @@ async def get_all_sc(
     transaction_price: int,
     su: usecases.StockUsecase = Depends(deps.get_stock_usecase),
 ) -> list[str]:
-    return su.get_sc_by_transaction_price(b_date=b_date, transaction_price=transaction_price)
+    return su.get_sc_by_transaction_price(
+        b_date=b_date, transaction_price=transaction_price
+    )
 
 
 @router.get("/list/{sc}", response_model=list[entities.Stock])

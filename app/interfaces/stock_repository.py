@@ -1,7 +1,7 @@
 import datetime
 from typing import Optional
 
-from sqlalchemy import  asc
+from sqlalchemy import asc
 from sqlalchemy.orm import Session
 
 import app.domains.entities as entities
@@ -28,7 +28,10 @@ class StockRepository(StockRepositoryInterface):
 
     def get_stock(self, sc: str) -> list[entities.Stock]:
         stocks: list[models.Stock] = (
-            self.db.query(self.model).filter(self.model.sc == sc).order_by(asc(models.Stock.b_date)).all()
+            self.db.query(self.model)
+            .filter(self.model.sc == sc)
+            .order_by(asc(models.Stock.b_date))
+            .all()
         )
         return [entities.Stock.from_orm(stock) for stock in stocks]
 
@@ -37,7 +40,14 @@ class StockRepository(StockRepositoryInterface):
         return [res[0] for res in result]
 
     def get_sc(self, b_date: datetime.date, transaction_price: int) -> list[str]:
-        result = self.db.query(self.model.sc).filter(self.model.transaction_price >= transaction_price, self.model.b_date == b_date).all()
+        result = (
+            self.db.query(self.model.sc)
+            .filter(
+                self.model.transaction_price >= transaction_price,
+                self.model.b_date == b_date,
+            )
+            .all()
+        )
         return [res[0] for res in result]
 
     def create(self, stock_created: entities.StockCreated) -> Optional[entities.Stock]:

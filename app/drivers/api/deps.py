@@ -12,7 +12,10 @@ import app.interfaces as interfaces
 import app.drivers.security as security
 from app.drivers.rdb.base import SessionLocal
 from app.core.config import settings
-from app.interfaces.repo_interfaces import StockSplitRepositoryInterface, ScNoteRepositoryInterface
+from app.interfaces.repo_interfaces import (
+    StockSplitRepositoryInterface,
+    ScNoteRepositoryInterface,
+)
 from app.interfaces.repo_interfaces import SavedStockRepositoryInterface
 
 reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"api/login/access-token/")
@@ -39,14 +42,12 @@ def get_stock_usecase(db: Session = Depends(get_db)) -> usecases.StockUsecase:
     repository_saved: SavedStockRepositoryInterface = interfaces.SavedStockRepository(
         db
     )
-    repository_sc_note: ScNoteRepositoryInterface = interfaces.ScNoteRepository(
-        db
-    )
+    repository_sc_note: ScNoteRepositoryInterface = interfaces.ScNoteRepository(db)
     return usecases.StockUsecase(
         repository=repository,
         repo_split=repository_split,
         repo_saved=repository_saved,
-        repo_sc_note=repository_sc_note
+        repo_sc_note=repository_sc_note,
     )
 
 
